@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="jquery.min.js"></script>
+    <title>Go</title>
+</head>
+<body>
+    <div id="logs"></div>
+    <script>
+        $.get('check.php', function(data, status) {
+            if (data == 'yes') $('#logs').append('Connection => SUCCESS<br>(hit the GO button to start)<br><button onclick="locate()">GO</button><br>');
+            else if (data == 'done') $('#logs').append('Script executed! No need to run again.<br>If you want to re run the script, please wipe out the data by click <a href="clear.php">here</a>');
+            else $('#logs').append('Connection to database => NOT MATCH<br>Set your database username and password in "config.json" file and run again!')
+        });
+    </script>
+
+    <script>
+        function getDetail(o, detail) {
+            res = "";
+            $.each(o.address_components, function() {
+                if (this.types.indexOf(detail) != -1) res = this.long_name;
+            })
+            return res;
+        }
+
+        function locate() {
+            apikey = 'AIzaSyDE57gE3EnuLkNqK-1A_raVkuAF5e1yQnQ';
+            $.get('query.php', function(data, status) {
+                $('#logs').append(data.length + ' records found.<br>');
+                $.each(data, function() {
+                    var address = this.address.split('\n')[0].replace(new RegExp(' ','g'), '+');
+                    var postal_code = this.postal_code;
+                    var find = 'https://maps.googleapis.com/maps/api/geocode/json?language=en&region=sg&components=postal_code:'+postal_code+'&address='+address+'&key='+apikey;
+                    $.get({
+                        url: find, 
+                        orgid: this.id, 
+                        success: function(data, status) {
+                            var orgid = this.orgid;
+                            var name = getDetail(data.results[0], "neighborhood");
+                            var address = data.results[0].formatted_address;
+                            var country = getDetail(data.results[0], "country");
+                            var street = getDetail(data.results[0], "route");
+                            var number = getDetail(data.results[0], "street_number");
+                            var place_id = data.results[0].place_id;
+                            var latitude = data.results[0].geometry.location.lat;
+                            var longtitude = data.results[0].geometry.location.lng;
+                            var url = 'insert.php?orgid='+orgid+'&name='+name+'&address='+address+'&country='+country+'&street='+street+'&number='+number+'&place_id='+place_id+'&latitude='+latitude+'&longtitude='+longtitude;
+                            $.get(url, function(data, status) {
+                                $('#logs').append(data + '<br>');
+                            })
+                        }
+                    })
+                })
+            })
+        }
+    </script>
+</body>
+</html>
