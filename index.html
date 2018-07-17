@@ -31,9 +31,10 @@
             $.get('query.php', function(data, status) {
                 $('#logs').append(data.length + ' records found.<br>');
                 $.each(data, function() {
-                    var address = this.address.split('\n')[0].replace(new RegExp(' ','g'), '+');
+                    // var address = this.address.split('\n')[0].replace(new RegExp(' ','g'), '+');
                     var postal_code = this.postal_code;
-                    var find = 'https://maps.googleapis.com/maps/api/geocode/json?language=en&region=sg&components=postal_code:'+postal_code+'&address='+address+'&key='+apikey;
+                    // var find = 'https://maps.googleapis.com/maps/api/geocode/json?language=en&region=sg&components=postal_code:'+postal_code+'&address='+address+'&key='+apikey;
+                    var find = 'https://maps.googleapis.com/maps/api/geocode/json?language=en&region=sg&components=postal_code:'+postal_code+'&key='+apikey;
                     $.get({
                         url: find, 
                         orgid: this.id, 

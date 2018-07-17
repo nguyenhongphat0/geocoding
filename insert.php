@@ -22,7 +22,7 @@
 
     $sql = "INSERT INTO `organisation__organisation_location`(`id_organisation`, `id_geolocation`) VALUES ('".$orgid."','".$conn->insert_id."')";
     $res = $conn->query($sql);
-    if ($res === TRUE) $logs .= ' => MAP KEY LSUCCESS';
+    if ($res === TRUE) $logs .= ' => MAP KEY SUCCESS';
     else $logs .= ' => MAP KEY ERROR';
 
     $conn->close();
