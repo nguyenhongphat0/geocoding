@@ -18,6 +18,8 @@
             } else {
                 logs.append('All location has been geocoded!');
             }
+        }).fail(() => {
+            logs.append('Connection to database => NOT MATCH<br>Set your database username and password in "config.json" file and run again!');
         });
     </script>
 
