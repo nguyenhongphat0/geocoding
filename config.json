@@ -1,6 +1,6 @@
 {
 	"servername": "localhost",
-	"dbname": "wellness",
+	"dbname": "wellness_live",
 	"username": "root",
-	"password": "hongphat"
+	"password": ""
 }

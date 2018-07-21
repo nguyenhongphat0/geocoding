@@ -1,4 +1,6 @@
 <?php
+    die('This script is deprecated!');
+
     error_reporting(E_ERROR | E_PARSE);
     $config = json_decode(file_get_contents('config.json'));
     $conn = new mysqli($config->servername, $config->username, $config->password, $config->dbname);
